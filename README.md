@@ -1,2 +1,2 @@
-# HDMapsDataConsumptionPrediction
-HD Maps Data Consumption Prediction
+# HDMapsDataAcquiredPrediction
+HD Maps Data Acquired Prediction
