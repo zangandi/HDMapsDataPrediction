@@ -23,7 +23,7 @@ api = overpy.Overpass()
 # start timer
 # query all links locate inside this bbox 
 bbox = (min(lat1, lat2),min(lon1, lon2),max(lat1, lat2),max(lon1, lon2))
-links = api.query("[out:json];way['highway']['highway'!='path']['highway'!='steps']['highway'!='footway']['highway'!='escape']['highway'!='service']['highway'!='pedestrian'](%f,%f,%f,%f);out;" %(bbox))
+links = api.query("[out:json];way['highway']['highway'!='path']['highway'!='steps']['highway'!='footway']['highway'!='escape']['highway'!='service']['highway'!='pedestrian']['highway'!='trunk']['highway'!='cycleway']['highway'!='trunk_link '](%f,%f,%f,%f);out;" %(bbox))
 # save all links in 'links' to file
 thefile = open('links_ways.txt', 'w')
 for item in links._ways:
@@ -60,8 +60,8 @@ for way in links.ways:
     way_nodes = way._node_ids
     # open a file to write all the control points (AKA nodes)
     my_node = open('%s.nodes'%(str(way.id)), 'w')
-    #my_tag = open('%s.tag'%(str(way.id)), 'w')
-    #my_name = open('%s.name'%(str(way.id)), 'w')
+    my_tag = open('%s.tag'%(str(way.id)), 'w')
+    my_name = open('%s.name'%(str(way.id)), 'w')
     # for each node on this link
     for node_id in way_nodes:
         # call overpy API again 
@@ -71,12 +71,12 @@ for way in links.ways:
     # close file
     my_node.close()
     # # write other attributes
-    # my_tag.write('%s\n'%(way.tags['highway']))
-    # try:
-    #     my_name.write('%s\n'%(way.tags['name']))
-    # except:
-    #     my_name.write('noname\n')  
-    # my_tag.close()
-    # my_name.close()
+    my_tag.write('%s\n'%(way.tags['highway']))
+    try:
+        my_name.write('%s\n'%(way.tags['name']))
+    except:
+        my_name.write('noname\n')  
+    my_tag.close()
+    my_name.close()
     # print something...
     print(way.id)
