@@ -1,2 +1,2 @@
-# HDMapsDataAcquiredPrediction
-HD Maps Data Acquired Prediction
+# HDMapsDataPrediction
+HD Maps Data Prediction
