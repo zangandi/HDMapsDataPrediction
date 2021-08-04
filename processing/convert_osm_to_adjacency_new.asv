@@ -40,7 +40,30 @@ end
 % used nodes list
 used_nodes_list_wo_duplication = [];
 
-for i = 1:size()
+for i = 1:size(nodes_link_count,1)
+    if nodes_link_count(i) > 1
+        used_nodes_list_wo_duplication = cat(1, used_nodes_list_wo_duplication, i);
+    end
+end
+
+
+
+% now we have 
+num_of_nodes = size(used_nodes_list_wo_duplication,1);
+num_of_links = size(osm,1);
+%
+adjacency_matrix = zeros(num_of_nodes, num_of_nodes);
+node_to_node_link_ids = cell(num_of_nodes, num_of_nodes);
+node_to_node_links = cell(num_of_nodes, num_of_nodes);
+%
+link_to_node_list = cell(num_of_links, 1);
+link_to_node_list_in_adj_matrix = zeros(num_of_links, 4);
+
+
+
+
+
+
 
 % read all end points
 end_point_ids_list = [];

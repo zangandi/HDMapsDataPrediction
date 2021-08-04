@@ -46,80 +46,10 @@ for i = 1:size(nodes_link_count,1)
     end
 end
 
-% read all end points
-end_point_ids_list = [];
-link_id_cell = {};
-for i = 1:length(link_id_list)
-    this_link = osm{i};
-    start_node_id = this_link(1,1);
-    end_node_id = this_link(end,1);
-    %
-    if ismember(start_node_id, end_point_ids_list)
-        idx = find(end_point_ids_list == start_node_id);
-        link_id_cell{idx} = cat(1, link_id_cell{idx}, link_id_list(i));
-    else
-        end_point_ids_list = cat(1, end_point_ids_list, start_node_id);
-        link_id_cell = cat(1, link_id_cell, {link_id_list(i)});
-    end
-    %
-    if ismember(end_node_id, end_point_ids_list)
-        idx = find(end_point_ids_list == end_node_id);
-        link_id_cell{idx} = cat(1, link_id_cell{idx}, link_id_list(i));
-    else
-        end_point_ids_list = cat(1, end_point_ids_list, end_node_id);
-        link_id_cell = cat(1, link_id_cell, {link_id_list(i)});
-    end
-end
 
 
-for i = 1:length(link_id_list)-1
-    for j = i+1:length(link_id_list)
-        if ~isempty(osm_intersection{i,j})
-            this_intersection = osm_intersection{i,j};
-            for k = 1:size(this_intersection,1)
-                if ismember(this_intersection(k), end_point_ids_list)
-                    idx = find(end_point_ids_list == this_intersection(k));
-                    link_id_cell{idx} = cat(1, link_id_cell{idx}, link_id_list(i));
-                    link_id_cell{idx} = cat(1, link_id_cell{idx}, link_id_list(j));
-                else
-                    end_point_ids_list = cat(1, end_point_ids_list, this_intersection(k));
-                    link_id_cell = cat(1, link_id_cell, {[link_id_list(i); link_id_list(j)]});
-                end
-            end
-        end
-    end
-end
-% clean up
-for i = 1:length(end_point_ids_list)
-    link_id_cell{i} = removeDuplicatedListMat(link_id_cell{i});
-end
-% all links
-all_link_ids = [];
-for i = 1:length(end_point_ids_list)
-    all_link_ids = cat(1, all_link_ids, link_id_cell{i});
-end
-all_link_ids = removeDuplicatedListMat(all_link_ids);
-
-% figure;
-% hold on;
-% 
-% [a,b] = find(osm_adjacency>1);
-% 
-% for i = 1:28
-%     trip_id1 = link_id_list(a(i));
-%     trip_id2 = link_id_list(b(i));
-% 
-%     trip1 = osm{find(link_id_list==trip_id1)};
-%     trip2 = osm{find(link_id_list==trip_id2)};
-% 
-%     bbox = [34.279936, 108.92185, 34.207309, 109.009348];
-% 
-%     plot(trip1(:,2), trip1(:,3),'r-');
-%     plot(trip2(:,2), trip2(:,3),'g-');
-% end
-
-
-num_of_nodes = size(end_point_ids_list,1);
+% now we have 
+num_of_nodes = size(used_nodes_list_wo_duplication,1);
 num_of_links = size(osm,1);
 %
 adjacency_matrix = zeros(num_of_nodes, num_of_nodes);
