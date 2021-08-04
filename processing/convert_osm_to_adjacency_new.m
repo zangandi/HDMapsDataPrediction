@@ -46,8 +46,11 @@ for i = 1:size(nodes_link_count,1)
     end
 end
 
-
-
+%
+end_point_ids_list = [];
+for i = 1:size(used_nodes_list_wo_duplication,1)
+    end_point_ids_list = cat(1, end_point_ids_list, osm_node_list(used_nodes_list_wo_duplication(i),:));
+end
 % now we have 
 num_of_nodes = size(used_nodes_list_wo_duplication,1);
 num_of_links = size(osm,1);
@@ -115,6 +118,28 @@ for i = 1:length(osm)
     osm{i} = cat(2, osm{i},this_link_from_start_node_to_end_node);
     disp('===========')
 end%endfor i
+
+% check all results
+for i = 1:size(osm,1)
+    this_link = osm{i};
+    %
+    if this_link(1,4) ~= this_link(1,1)
+        disp(i)
+    end
+    
+    if this_link(end,5) ~= this_link(end,1)
+        disp(i)
+    end
+    %
+end
+%
+
+
+
+
+
+
+
 
 %%
 save('all_nodes_adjacency_0618.mat',...
