@@ -63,61 +63,61 @@ link_to_node_list = cell(num_of_links, 1);
 link_to_node_list_in_adj_matrix = zeros(num_of_links, 4);
 
 %
-for i = 1:length(osm)
-    this_link = osm{i};
-    this_link_node_ids = this_link(:,1);
-    this_link_node_locs = this_link(:,2:3);
-    %
-    section_start_id = 0;
-    %
-    this_link_from_start_node_to_end_node = [];
-    %
-    section_counter = 1;
-    %
-    for j = 1:size(this_link,1)
-        if ismember(this_link_node_ids(j), end_point_ids_list)
-            if j == 1
-                section_start_id = this_link_node_ids(1);
-                this_section = this_link_node_locs(j,:);
-                %
-            elseif section_start_id ~= 0
-                %
-                section_counter = section_counter + 1;
-                %
-                this_section = cat(1, this_section, this_link_node_locs(j,:));
-                section_start_id_in_node_list = find(end_point_ids_list == section_start_id);
-                section_end_id_in_node_list = find(end_point_ids_list == this_link_node_ids(j));
-                % update
-                adjacency_matrix(section_start_id_in_node_list, section_end_id_in_node_list) = 1;
-                node_to_node_link_ids{section_start_id_in_node_list, section_end_id_in_node_list} = ...
-                    cat(1, node_to_node_link_ids{section_start_id_in_node_list, section_end_id_in_node_list}, link_id_list(i));
-                node_to_node_links{section_start_id_in_node_list, section_end_id_in_node_list} = ...
-                    cat(1, node_to_node_links{section_start_id_in_node_list, section_end_id_in_node_list}, {this_section});
-                %
-                this_link_from_start_node_to_end_node = cat(1, this_link_from_start_node_to_end_node,...
-                                                           repmat([section_start_id, this_link_node_ids(j)], section_counter, 1));
-                % reset
-                section_counter = 0;
-                this_section = [];
-                section_start_id = this_link_node_ids(j);
-                %
-                disp(section_start_id_in_node_list);
-                disp(section_end_id_in_node_list);
-            else
-                this_section = cat(1, this_section, this_link_node_locs(j,:));
-                section_counter = section_counter + 1;
-            end
-            %
-            link_to_node_list{i} = cat(1, link_to_node_list{i},this_link_node_ids(j));
-        else
-            this_section = cat(1, this_section, this_link_node_locs(j,:));
-            section_counter = section_counter + 1;
-        end
-    end
-    %
-    osm{i} = cat(2, osm{i},this_link_from_start_node_to_end_node);
-    disp('===========')
-end%endfor i
+% for i = 1:length(osm)
+%     this_link = osm{i};
+%     this_link_node_ids = this_link(:,1);
+%     this_link_node_locs = this_link(:,2:3);
+%     %
+%     section_start_id = 0;
+%     %
+%     this_link_from_start_node_to_end_node = [];
+%     %
+%     section_counter = 1;
+%     %
+%     for j = 1:size(this_link,1)
+%         if ismember(this_link_node_ids(j), end_point_ids_list)
+%             if j == 1
+%                 section_start_id = this_link_node_ids(1);
+%                 this_section = this_link_node_locs(j,:);
+%                 %
+%             elseif section_start_id ~= 0
+%                 %
+%                 section_counter = section_counter + 1;
+%                 %
+%                 this_section = cat(1, this_section, this_link_node_locs(j,:));
+%                 section_start_id_in_node_list = find(end_point_ids_list == section_start_id);
+%                 section_end_id_in_node_list = find(end_point_ids_list == this_link_node_ids(j));
+%                 % update
+%                 adjacency_matrix(section_start_id_in_node_list, section_end_id_in_node_list) = 1;
+%                 node_to_node_link_ids{section_start_id_in_node_list, section_end_id_in_node_list} = ...
+%                     cat(1, node_to_node_link_ids{section_start_id_in_node_list, section_end_id_in_node_list}, link_id_list(i));
+%                 node_to_node_links{section_start_id_in_node_list, section_end_id_in_node_list} = ...
+%                     cat(1, node_to_node_links{section_start_id_in_node_list, section_end_id_in_node_list}, {this_section});
+%                 %
+%                 this_link_from_start_node_to_end_node = cat(1, this_link_from_start_node_to_end_node,...
+%                                                            repmat([section_start_id, this_link_node_ids(j)], section_counter, 1));
+%                 % reset
+%                 section_counter = 0;
+%                 this_section = [];
+%                 section_start_id = this_link_node_ids(j);
+%                 %
+%                 disp(section_start_id_in_node_list);
+%                 disp(section_end_id_in_node_list);
+%             else
+%                 this_section = cat(1, this_section, this_link_node_locs(j,:));
+%                 section_counter = section_counter + 1;
+%             end
+%             %
+%             link_to_node_list{i} = cat(1, link_to_node_list{i},this_link_node_ids(j));
+%         else
+%             this_section = cat(1, this_section, this_link_node_locs(j,:));
+%             section_counter = section_counter + 1;
+%         end
+%     end
+%     %
+%     osm{i} = cat(2, osm{i},this_link_from_start_node_to_end_node);
+%     disp('===========')
+% end%endfor i
 
 % check all results
 for i = 1:size(osm,1)
@@ -135,7 +135,34 @@ end
 %
 
 
-
+%
+for i = 1:size(osm,1)
+    this_link = osm{i};
+    %
+    temp_node_to_node_links = cell(num_of_nodes, num_of_nodes);
+    %
+    for j = 1:size(this_link,1)
+        %
+        this_node_id = this_link(j,1);
+        this_node_id_in_whole_list = find(osm_node_list(:,1) == this_node_id);
+        this_node_location = osm_node_list(this_node_id_in_whole_list,2:3);
+        %
+        start_node_id = this_link(j,4);
+        end_node_od = this_link(j,5);
+        %
+        start_id_in_node_list = find(end_point_ids_list(:,1) == start_node_id);
+        end_id_in_node_list = find(end_point_ids_list(:,1) == end_node_od);
+        %
+        if isempty(start_id_in_node_list) || isempty(end_id_in_node_list)
+            disp(i)
+        end
+        %
+        temp_node_to_node_links{start_id_in_node_list, end_id_in_node_list} = ...
+            cat(1, temp_node_to_node_links{start_id_in_node_list, end_id_in_node_list}, this_node_location);
+    end
+    %
+    node_to_node_links = cat(3, node_to_node_links, temp_node_to_node_links);
+end
 
 
 
