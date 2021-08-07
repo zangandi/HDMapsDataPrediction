@@ -1,12 +1,15 @@
 clear all
+addpath('.\satelliteImgRetriever\')
 %
 load xian_hd_maps_0602.mat
 load traffic_1029.mat
 %
 load all_nodes_adjacency_0618.mat
 %
+bbox = [34.279936, 108.92185, 34.207309, 109.009348];
 osm_to_didi_mis_lon = 0.0047;
 osm_to_didi_mis_lat =-0.0016;
+zoomlevel = 13;
 %
 number_of_intersections = size(adjacency_matrix,1);
 % sparse representation

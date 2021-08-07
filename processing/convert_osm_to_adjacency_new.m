@@ -161,7 +161,9 @@ for i = 1:size(osm,1)
             cat(1, temp_node_to_node_links{start_id_in_node_list, end_id_in_node_list}, this_node_location);
     end
     %
-    node_to_node_links = cat(3, node_to_node_links, temp_node_to_node_links);
+    node_to_node_links = verticalMergeCell(node_to_node_links, temp_node_to_node_links);
+    %
+    disp(i)
 end
 
 
@@ -169,7 +171,7 @@ end
 
 
 %%
-save('all_nodes_adjacency_0618.mat',...
+save('all_nodes_adjacency_0806.mat',...
     'adjacency_matrix', 'node_to_node_link_ids', 'node_to_node_links', 'end_point_ids_list',...
     'osm_node_list', 'osm', 'link_id_list', 'link_to_node_list');
 
