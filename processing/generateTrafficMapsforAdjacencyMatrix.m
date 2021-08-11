@@ -20,7 +20,6 @@ tti_location_list = [];
 for i = 1:number_of_intersections
     for j = 1:number_of_intersections
         if ~isempty(node_to_node_links{i,j})
-            aaa
             canvas = zeros(513,510);
             for k = 1:size(node_to_node_links{i,j},1)
                 this_link = node_to_node_links{i,j}{k};
@@ -58,5 +57,5 @@ for i = 1:number_of_intersections
     end
 end
 
-save('traffic_for_graph.mat', 'adjacency_matrix', 'end_point_ids_list',...
+save('traffic_for_graph_0811.mat', 'adjacency_matrix', 'end_point_ids_list',...
     'speed_value_list','tti_value_list','tti_location_list');

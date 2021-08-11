@@ -22,7 +22,7 @@ counter = 0;
 %
 for i = 1:size(end_point_ids_list,1)
     for j = 1:size(end_point_ids_list,1)
-        if adjacency_matrix(i,j)~=0
+        if ~isempty(node_to_node_links{i,j})
             %
             start_node_id = end_point_ids_list(i);
             end_node_id = end_point_ids_list(j);
@@ -94,4 +94,4 @@ for i = 1:size(end_point_ids_list,1)
     end
 end
 %
-save('hd_maps_for_each_link_06_23.mat', 'all_links');
+save('hd_maps_for_each_link_08_11.mat', 'all_links');
