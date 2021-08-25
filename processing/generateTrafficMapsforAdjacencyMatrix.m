@@ -3,10 +3,12 @@
 %
 clear all
 %
+addpath('.\satelliteImgRetriever\')
+%
 load xian_hd_maps_0602.mat
 load traffic_1029.mat
 %
-load all_nodes_adjacency_0618.mat
+load all_nodes_adjacency_0810.mat
 %
 osm_to_didi_mis_lon = 0.0047;
 osm_to_didi_mis_lat =-0.0016;
@@ -57,5 +59,5 @@ for i = 1:number_of_intersections
     end
 end
 
-save('traffic_for_graph_0811.mat', 'adjacency_matrix', 'end_point_ids_list',...
+save('traffic_for_graph_0811.mat', 'node_to_node_links', 'end_point_ids_list',...
     'speed_value_list','tti_value_list','tti_location_list');
