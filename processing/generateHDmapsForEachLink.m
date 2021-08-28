@@ -3,6 +3,7 @@
 clear all
 %
 load xian_hd_maps_0602.mat
+load all_nodes_adjacency_0810.mat
 %
 % end_point_ids_list
 % adjacency_matrix
@@ -48,16 +49,38 @@ for i = 1:size(end_point_ids_list,1)
                 [this_segment_shift_interpolated, dist] = llaPolylineInterpolation(this_segment_shift, 5);
                 %
                 loc_list = [];
+                loc_shift_list = [];
                 for l = 1:size(this_segment_shift_interpolated,1)
                     xy1 = lla2bbox(this_segment_shift_interpolated(l,:), bbox, [size(hd_maps,1), size(hd_maps,2)]);
                     if l == 1
                         loc_list = cat(1, loc_list, xy1);
+                        loc_shift_list = [0,0];
                     else
                         if ~isequal(xy1,loc_list(end,:))
+                            loc_shift_list = cat(1, loc_shift_list, xy1-loc_list(end,:));
                             loc_list = cat(1, loc_list, xy1);
                         end
                     end
                 end
+                %
+                if size(loc_list,1) ~= size(loc_shift_list,1)
+                    warning(i);
+                end
+                %
+                blank_canvas = zeros(513,510);
+                %
+                for l = 1:size(loc_list,1)
+                    blank_canvas(loc_list(l,1), loc_list(l,2)) = 1;
+                end
+                %
+                vis = zeros(513,510,3);
+                hd_channel = hd_maps(:,:,1)./max(max(hd_maps(:,:,1)));
+                vis(:,:,1) = hd_channel;
+                vis(:,:,2) = blank_canvas;
+                imshow(vis)
+                %
+                
+                
                 %
                 num_of_batches = size(loc_list,1);
                 %
@@ -94,4 +117,4 @@ for i = 1:size(end_point_ids_list,1)
     end
 end
 %
-save('hd_maps_for_each_link_08_11.mat', 'all_links');
+save('hd_maps_for_each_link_08_26.mat', 'all_links');
