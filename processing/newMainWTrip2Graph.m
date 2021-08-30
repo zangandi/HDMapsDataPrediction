@@ -7,7 +7,7 @@ load xian_hd_maps_0602.mat
 load osm_1013_link.mat
 load osm_1013_adjacency.mat
 load osm_1111_intersectionmap.mat
-load all_nodes_adjacency_0811.mat
+load all_nodes_adjacency_0810.mat
 % load traffic
 load traffic_1029.mat
 % osm_node_list = csvread('.\data\xian_osm_1009\nodes.csv');

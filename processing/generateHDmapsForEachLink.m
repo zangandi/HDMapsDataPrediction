@@ -70,17 +70,28 @@ for i = 1:size(end_point_ids_list,1)
                 blank_canvas = zeros(513,510);
                 %
                 for l = 1:size(loc_list,1)
-                    blank_canvas(loc_list(l,1), loc_list(l,2)) = 1;
+                    if loc_list(l,1)<=513 && loc_list(l,1)>0 &&...
+                            loc_list(l,2)<=510 && loc_list(l,2) >0
+                        blank_canvas(loc_list(l,1), loc_list(l,2)) = 1;
+                    end
                 end
                 %
-                vis = zeros(513,510,3);
-                hd_channel = hd_maps(:,:,1)./max(max(hd_maps(:,:,1)));
-                vis(:,:,1) = hd_channel;
-                vis(:,:,2) = blank_canvas;
-                imshow(vis)
+                se = strel('square',5);
+                blank_canvas_dilated = imdilate(blank_canvas,se);
+                
                 %
-                
-                
+%                 vis = zeros(513,510,3);
+%                 hd_channel = hd_maps(:,:,1)./max(max(hd_maps(:,:,1)));
+%                 vis(:,:,1) = hd_channel;
+%                 vis(:,:,2) = blank_canvas;
+%                 vis(:,:,3) = blank_canvas_dilated;
+%                 imshow(vis)
+                %
+                total_mdc = zeros(1,3);
+                %
+                for l = 1:3
+                    total_mdc(l) = sum(sum(hd_maps(:,:,l).*blank_canvas_dilated));
+                end
                 %
                 num_of_batches = size(loc_list,1);
                 %
@@ -108,6 +119,8 @@ for i = 1:size(end_point_ids_list,1)
                 this_link.num_of_batches = num_of_batches;
                 this_link.hd_maps = hd_maps_of_this_link;
                 this_link.lengh = dist;
+                this_link.loc_shift_list = loc_shift_list;
+                this_link.total_mdc = total_mdc;
                 %
             end
             %
@@ -117,4 +130,4 @@ for i = 1:size(end_point_ids_list,1)
     end
 end
 %
-save('hd_maps_for_each_link_08_26.mat', 'all_links');
+save('hd_maps_for_each_link_08_30.mat', 'all_links');
