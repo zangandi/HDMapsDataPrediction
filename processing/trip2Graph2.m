@@ -57,17 +57,9 @@ end
 
 %
 trip_in_graph = [];
-for i = 2:size(whole_trip,1)
-    if whole_trip(i,6)~= whole_trip(i-1,6)
-        if whole_trip(i,8) == whole_trip(i-1,8)
-            trip_in_graph = cat(1, trip_in_graph, whole_trip(i,8));
-        elseif whole_trip(i,7) == whole_trip(i-1,7)
-            trip_in_graph = cat(1, trip_in_graph, whole_trip(i,7));
-        elseif whole_trip(i,7) == whole_trip(i-1,8)
-            trip_in_graph = cat(1, trip_in_graph, whole_trip(i,7));
-        elseif whole_trip(i,8) == whole_trip(i-1,7)
-            trip_in_graph = cat(1, trip_in_graph, whole_trip(i,8));
-        end
+for i = 2:size(new_trip_filtered,1)
+    if new_trip_filtered(i,6)~= new_trip_filtered(i-1,6)
+        this_link_id = 
     end
 end
 
@@ -81,8 +73,10 @@ plot(this_raw_loc(2), this_raw_loc(1), 'bo');
 figure;
 hold on;
 bbox = [34.279936, 108.92185, 34.207309, 109.009348];
+
 osm_to_didi_mis_lon = 0.0047;
 osm_to_didi_mis_lat = -0.0016;
+
 for i = 1:size(osm)
     link = osm{i};
     plot(link(:,3) + osm_to_didi_mis_lon, link(:,2) + osm_to_didi_mis_lat,'k--', 'linewidth', 1);
