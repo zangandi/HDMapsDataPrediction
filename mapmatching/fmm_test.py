@@ -1,5 +1,5 @@
 from fmm import Network,NetworkGraph,STMATCH,STMATCHConfig
-network = Network("../data/edges.shp")
+network = Network("edges.shp")
 graph = NetworkGraph(network)
 print graph.get_num_vertices()
 model = STMATCH(network,graph)
