@@ -11,15 +11,20 @@ output_dir = 'C:\Users\zanga\Documents\GitHub\HDMapsDataPrediction\processing\da
 prefix = 'LINESTRING(';
 suffix = ')';
 %
+
+osm_to_didi_mis_lon = 0.0047;
+osm_to_didi_mis_lat =-0.0016;
+
+%
 all_trip_names = dir(strcat(input_dir,'*.csv'));
 %
 fid = fopen(strcat(output_dir,'test.wkt'),'w');
 %
-for i = 1:size(all_trip_names,1)
+for i = 1:3%size(all_trip_names,1)
     trace = csvread(strcat(input_dir,all_trip_names(i).name),1,0);
     %
-    raw_lat = trace(:,3);
-    raw_lon = trace(:,2);
+    raw_lat = trace(:,3)-osm_to_didi_mis_lat;
+    raw_lon = trace(:,2)-osm_to_didi_mis_lon;
     raw_alt = zeros(size(trace,1),1);
     %
 %     raw_locs = cat(2, raw_lat, raw_lon, raw_alt);
@@ -44,8 +49,8 @@ for i = 1:size(all_trip_names,1)
     %
     fprintf(fid, 'LINESTRING(');
     for j = 1:size(raw_lat,1)-1
-        fprintf(fid,'%.5f %.5f,',raw_lat(j),raw_lon(j));
+        fprintf(fid,'%.5f %.5f,',raw_lon(j),raw_lat(j));
     end
-    fprintf(fid,'%.5f %.5f)\n',raw_lat(end),raw_lon(end));
+    fprintf(fid,'%.5f %.5f)\n',raw_lon(end),raw_lat(end));
 end
 fclose(fid);

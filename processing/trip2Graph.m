@@ -23,6 +23,7 @@ if ~isempty(new_trip_filtered)
     trip = new_trip_filtered;
     %
     portions = zeros(size(trip,1), 4);
+    whole_trip = [];
     %
     for i = 1:size(trip,1)
         %
@@ -54,28 +55,28 @@ else
 end
 
 
-% figure
-% hold on
-% plot(reference_link(:,3)+osm_to_didi_mis_lon, reference_link(:,2)+osm_to_didi_mis_lat, 'r-');
-% plot(this_mm_loc(2), this_mm_loc(1), 'ro');
-% plot(this_raw_loc(2), this_raw_loc(1), 'bo');
-% 
+figure
+hold on
+plot(reference_link(:,3)+osm_to_didi_mis_lon, reference_link(:,2)+osm_to_didi_mis_lat, 'r-');
+plot(this_mm_loc(2), this_mm_loc(1), 'ro');
+plot(this_raw_loc(2), this_raw_loc(1), 'bo');
+
+%
+figure;
+hold on;
+bbox = [34.279936, 108.92185, 34.207309, 109.009348];
+osm_to_didi_mis_lon = 0.0047;
+osm_to_didi_mis_lat = -0.0016;
+for i = 1:size(osm)
+    link = osm{i};
+    plot(link(:,3) + osm_to_didi_mis_lon, link(:,2) + osm_to_didi_mis_lat,'k--', 'linewidth', 1);
+end
+
+for i = 1:size(end_point_ids_list,1)
+    idx = find(osm_node_list(:,1) == end_point_ids_list(i));
+    plot(osm_node_list(idx,3) + osm_to_didi_mis_lon, osm_node_list(idx,2) + osm_to_didi_mis_lat,'go', 'linewidth', 1);
+end
+
 % %
-% figure;
-% hold on;
-% bbox = [34.279936, 108.92185, 34.207309, 109.009348];
-% osm_to_didi_mis_lon = 0.0047;
-% osm_to_didi_mis_lat = -0.0016;
-% for i = 1:size(osm)
-%     link = osm{i};
-%     plot(link(:,3) + osm_to_didi_mis_lon, link(:,2) + osm_to_didi_mis_lat,'k--', 'linewidth', 1);
-% end
-% 
-% for i = 1:size(end_point_ids_list,1)
-%     idx = find(osm_node_list(:,1) == end_point_ids_list(i));
-%     plot(osm_node_list(idx,3) + osm_to_didi_mis_lon, osm_node_list(idx,2) + osm_to_didi_mis_lat,'go', 'linewidth', 1);
-% end
-% 
-% % %
-% plot(new_trip(:,5), new_trip(:,4),'b-', 'linewidth', 2);
-% plot(trip(:,2), trip(:,3),'r-', 'linewidth', 2);
+plot(new_trip_filtered(:,5), new_trip_filtered(:,4),'b-', 'linewidth', 2);
+plot(trip(:,2), trip(:,3),'r-', 'linewidth', 2);
