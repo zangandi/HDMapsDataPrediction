@@ -23,9 +23,8 @@ for k = 1:30
     %
     all_trip_names = dir(strcat(folder_name,'*.csv'));
     %
-    fid = fopen(strcat(output_dir,num2str(k),'.wkt'),'w');
-    %
-    stats = zeros(size(all_trip_names,1),4);
+    all_trips_w_ts = cell(0);
+    c = 1;
     %
     for i = 1:size(all_trip_names,1)
         trace = csvread(strcat(folder_name,all_trip_names(i).name),1,0);
@@ -40,6 +39,7 @@ for k = 1:30
             raw_locs_ecef = lla2ecef(raw_locs);
             %
             filtered_locs = raw_locs(1,:);
+            filtered_ts = trace(1,1);
             filtered_locs_ecef = raw_locs_ecef(1,:);
             %
             this_total_length = 0;
@@ -48,38 +48,25 @@ for k = 1:30
                 if norm(raw_locs_ecef(j,:) - raw_locs_ecef(j-1,:))>=T
                     filtered_locs = cat(1, filtered_locs, raw_locs(j,:));
                     filtered_locs_ecef = cat(1, filtered_locs_ecef, raw_locs_ecef(j,:));
+                    filtered_ts = cat(1, filtered_ts, trace(j,1));
                 end
                 this_total_length = this_total_length + norm(raw_locs_ecef(j,:) - raw_locs_ecef(j-1,:));
             end%enfor j
             if norm(raw_locs_ecef(end,:) - raw_locs_ecef(end-1,:))>=T
                 filtered_locs = cat(1, filtered_locs, raw_locs(end,:));
                 filtered_locs_ecef = cat(1, filtered_locs_ecef, raw_locs_ecef(end,:));
+                filtered_ts = cat(1, filtered_ts, trace(end,1));
             else
                 filtered_locs(end,:) = raw_locs(end,:);
                 filtered_locs_ecef(end,:) = raw_locs_ecef(end,:);
+                filtered_ts(end)  = trace(end,1);
             end
             %
-            %
-            stats(i,1) = size(raw_lat,1);
-            stats(i,2) = size(filtered_locs,1);
-            stats(i,3) = this_total_length;
-            stats(i,4) = trace(end,1) - trace(1,1);
-            %
-        %     fid = fopen(strcat(output_dir,all_trip_names(i).name),'w');
-        %     fprintf(fid,'latitude,longitude\n');
-        %     for j = 1:size(filtered_locs,1)
-        %         fprintf(fid,'%.5f, %.5f\n',filtered_locs(j,1:2));
-        %     end
-        %     fclose(fid);
-            fprintf(fid, 'LineString(');
-            for j = 1:size(filtered_locs,1)-1
-                fprintf(fid,'%.5f %.5f,',filtered_locs(j,2),filtered_locs(j,1));
-            end
-            fprintf(fid,'%.5f %.5f)\n',filtered_locs(end,2),filtered_locs(end,1));
-
+            all_trips_w_ts{c}.locs = filtered_locs;
+            all_trips_w_ts{c}.ts = filtered_ts;
+            c = c + 1;
         end
     end
-    fclose(fid);
-    save(strcat('G:\didi\data\',num2str(k),'_stats.mat'),'stats')
+    save(strcat('G:\didi\data\',num2str(k),'_w_ts.mat'),'all_trips_w_ts')
     disp(k)
 end

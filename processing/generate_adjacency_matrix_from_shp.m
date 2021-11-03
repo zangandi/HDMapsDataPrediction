@@ -2,7 +2,9 @@
 %
 %
 clear all
-
+%
+addpath('../jsonlab/')
+%
 edge_shp = shaperead('..\mapmatching\network\edges.shp');
 node_shp = shaperead('..\mapmatching\network\nodes.shp');
 %
