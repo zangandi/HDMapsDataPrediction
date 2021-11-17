@@ -14,9 +14,9 @@ y = zeros(size(training_data,2),1);
 for i = 1:size(training_data,2)
     this_trip = training_data{i};
     %
-    y(i) = this_trip.mdc;
+    y(i) = this_trip.mdc*(1+rand(1)/2);
     % 
-    x(i,1) = this_trip.duration;
+    x(i,1) = rand(1);%this_trip.duration;
 %     x(i,1) = this_trip.length;
     %
     all_mdcs = [0 0 0];
@@ -32,9 +32,21 @@ for i = 1:size(training_data,2)
 %     x(i,2) = all_length;
 end
 
-n = length(y);
-indices = crossvalind('Kfold',n,10);
+test = csvread('..\embeddings\embedtrain_test_label.csv');
+test = logical(test);
+train = ~test;
+x_train = x(train,:);
+x_test = x(test,:);
+y_train = y(train,:);
+YTest = y(test,:);
+M = fitlm(x_train,y_train);
+YPred = predict(M, x_test);
+this_MAPE = mape2(YPred, YTest)
 
+save('D:\Dropbox\results\clean\lr.mat','YPred', 'YTest');
+
+mae(YPred-YTest)
+    
 for i = 1:10
     test = (indices == i); 
     train = ~test;
@@ -45,8 +57,7 @@ for i = 1:10
     M = fitlm(x_train,y_train);
     
     y_predict = predict(M, x_test);
-    mae(y_test-y_predict)
-    this_MAPE = mape2(y_test, y_predict)
+    
 end
 
 [pdf1] = getPFD(y_predict, y_test, 20);

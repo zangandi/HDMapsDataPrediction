@@ -1,6 +1,6 @@
 clear all
 % load trips
-load('G:\didi\run_0113\311.mat');
+load('G:\didi\run_0113\111.mat');
 % load edge information
 
 y2 = zeros(size(fast_mat,2),1);
@@ -19,3 +19,6 @@ this_MAPE = mape2(y2, y1)
 
 [pdf2] = getPFD(y1, y2, 20);
 
+YPred = y2;
+YTest = y1;
+save('D:\Dropbox\results\clean\lstm.mat','YPred', 'YTest');
